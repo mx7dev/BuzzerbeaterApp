@@ -1,0 +1,302 @@
+<div class="animated fadeIn">   
+    <!--/.row-->
+    <div class="row">
+        <!-- <div class="col-lg-1"></div> -->
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                  <strong>BUZZERBEATER</strong>
+                </div>
+                <div class="card-body">
+                  <div class="form-inline">
+                    <div class="form-group row col-md-6">                      
+                      <div class="col-md-4 align-label">
+                        <label class="col-form-label" for="selectCategory">Usuario/Team</label>
+                      </div>
+                      <div class="col-md-8 col-sm-12">
+                        <!-- <select id="selectUser" name="selectUser" [(ngModel)]="idUser" style="width: 90%;" multiple >
+                          <option value=0>Todos</option> 
+                          <option *ngFor="let item of listaUserTeam" [value] = "item.spassword">{{ item.suser }}</option>                          
+                        </select> -->
+                        <ng-multiselect-dropdown
+                            name="idUser"
+                            [placeholder]="'Todos'"
+                            [data]="listaUserTeam"
+                            [(ngModel)] = "listUser"
+                            [settings]="dropdownSettings">
+                        </ng-multiselect-dropdown>
+                      </div>
+                    </div>
+                  </div><br>
+                </div>
+                <div class="card-footer" style="text-align: center;">
+                  <div>
+                    <button  class="btn btn-md btn-primary" (click)="getListPlayers()"><i class="fa fa-search fa-lg"></i> Buscar</button>&nbsp;&nbsp;
+                    <button  class="btn btn-md btn-primary" data-toggle="modal" (click)="getUpdatedTeam()"><i class="fa fa-refresh fa-lg"></i> Sincronizar</button>&nbsp;&nbsp;
+                    <button  class="btn btn-md btn-primary" data-toggle="modal" (click)="savePlayers()"><i class="fa fa-save fa-lg"></i> Guardar</button>&nbsp;&nbsp;
+                    <button  class="btn btn-md btn-primary" data-toggle="modal" (click)="exportexcel()"><i class="fa fa-file-excel-o fa-lg"></i> Exportar</button>
+                  </div><br>
+                  <div class="update">
+                    <span>Ultima Actualización : </span>{{fechaUltimaActualizacion | date: 'dd/MM/yyyy HH:mm' }}
+                  </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-1"></div>         -->
+    </div>
+    <div class="row">
+      <!-- <div class="col-lg-1"></div> -->
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Listado de Jugadores
+          </div>
+          <div class="card-body">
+            <div class="table-scroll">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Owner</th>
+                    <th style="text-align: center;">Nombre</th>
+                    <th style="text-align: center;">ID</th>
+                    <th style="text-align: center;">Equipo</th>
+                    <th style="text-align: center;">Posición</th>
+                    <th style="text-align: center;">Nueva Posición</th>
+                    <th style="text-align: center;">Sueldo</th>
+                    <th style="text-align: center;">Edad</th>
+                    <th style="text-align: center;">Altura</th>
+                    <th style="text-align: center;" title="Fecha Ultima Actualización">Fecha Ult. Act.</th>
+                    <th style="text-align: center;">Filtro1</th>
+                    <th style="text-align: center;">Filtro2</th>
+                    <th style="text-align: center;" title="Forma">FO</th>
+                    <th style="text-align: center;" title="Potencial">PT</th>
+                    <th style="text-align: center;" title="Tiro">TR</th>
+                    <th style="text-align: center;" title="Alcance">AC</th>
+                    <th style="text-align: center;" title="Defensa exterior">DE</th>
+                    <th style="text-align: center;" title="Manejo">MN</th>
+                    <th style="text-align: center;" title="Penetración">PEN</th>
+                    <th style="text-align: center;" title="Pases">PA</th>
+                    <th style="text-align: center;" title="Tiro interior">TI</th>
+                    <th style="text-align: center;" title="Defensa interior">DI</th>
+                    <th style="text-align: center;" title="Rebotes">RB</th>
+                    <th style="text-align: center;" title="Tapones">TP</th>
+                    <th style="text-align: center;" title="Resistencia">RE</th>
+                    <th style="text-align: center;" title="Tiros libres">TL</th>
+                    <th style="text-align: center;" title="Experiencia">XP</th>
+                    <th style="text-align: center;" title="Suma Exterior">SE</th>
+                    <th style="text-align: center;" title="Suma Interior">SI</th>
+                    <th style="text-align: center;" title="Suma Total">ST</th>
+                    <th style="text-align: center;">Marca</th>
+                    <th style="text-align: center;">Es Selección</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let player of listPlayersTemp">
+                    <td style="text-align: center;">{{ player.owner}}</td>
+                    <!-- <td style="text-align: center;" title="Ultima actualización del Registro: {{player.dupdate | date: 'dd/MM/yyyy HH:mm' }}">{{ player.firstName + ' ' + player.lastName }}</td> -->
+                    <td style="text-align: center;">{{ player.firstName + ' ' + player.lastName }}</td>
+                    <td style="text-align: center;">{{ player.idplayer}}</td>
+                    <td style="text-align: center;">{{ player.teamName}}</td>
+                    <td style="text-align: center;">{{ player.bestPosition}}</td>
+                    <td style="text-align: center;">
+                      <select name="selectUser" style="width: 100px;" (change) = "changePosition($event, player)">
+                        <option [selected]="item.id == player.bestPositionNew" *ngFor="let item of listaPosition" [value] = "item.id">{{ item.name }}</option>                          
+                      </select> 
+                    </td>
+                    <td style="text-align: center;">{{ player.salary }}</td>
+                    <td style="text-align: center;">{{ player.age}}</td>
+                    <td style="text-align: center;">{{ player.height}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-red-data': player.flagFecha3Dias > 3}">{{ player.dupdate | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td style="text-align: center;">{{ player.filtro1}}</td>
+                    <td style="text-align: center;">{{ player.filtro2}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_gameShape > 0, 'color-red': player.flag_gameShape < 0}">{{ player.gameShape}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_potential > 0, 'color-red': player.flag_potential < 0}">{{ player.potential}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_jumpShot > 0, 'color-red': player.flag_jumpShot < 0}">{{ player.jumpShot}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_nrange > 0, 'color-red': player.flag_nrange < 0}">{{ player.nrange}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_outsideDef > 0, 'color-red': player.flag_outsideDef < 0}">{{ player.outsideDef}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_handling > 0, 'color-red': player.flag_handling < 0}">{{ player.handling}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_driving > 0, 'color-red': player.flag_driving < 0}">{{ player.driving}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_passing > 0, 'color-red': player.flag_passing < 0}">{{ player.passing}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_insideShot > 0, 'color-red': player.flag_insideShot < 0}">{{ player.insideShot}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_insideDef > 0, 'color-red': player.flag_insideDef < 0}">{{ player.insideDef}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_rebound > 0, 'color-red': player.flag_rebound < 0}">{{ player.rebound}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_block > 0, 'color-red': player.flag_block < 0}">{{ player.block}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_stamina > 0, 'color-red': player.flag_stamina < 0}">{{ player.stamina}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_freeThrow > 0, 'color-red': player.flag_freeThrow < 0}">{{ player.freeThrow}}</td>
+                    <td style="text-align: center;" [ngClass]="{'color-green': player.flag_experience > 0, 'color-red': player.flag_experience < 0}">{{ player.experience}}</td>
+                    <td style="text-align: center;">{{ player.sumaExterior}}</td>
+                    <td style="text-align: center;">{{ player.sumaInterior}}</td>
+                    <td style="text-align: center;">{{ player.sumaTotal}}</td>
+                    <td style="text-align: center;">
+                      <!-- <input type="checkbox" [checked]="player.check1 == 1 ? true : false" (click)="checkSelected($event, player)" /> -->
+                      <select name="selectUser" style="width: 120px;"  (change) = "changeMarca($event, player)">
+                        <option [selected]="item.id == player.check1" *ngFor="let item of listaOpcionesMarca" [value] = "item.id">{{ item.name }}</option>                          
+                      </select> 
+                    </td>
+                    <td style="text-align: center;">
+                      <!-- <input type="checkbox" [checked]="player.check2 == 1 ? true : false" (click)="checkSelected2($event, player)" /> -->
+                      <select name="selectUser" style="width: 120px;" (change) = "changeSeleccion($event, player)">
+                        <option [selected]="item.id == player.check2" *ngFor="let item of listaOpcionesTipo" [value] = "item.id">{{ item.name }}</option>                          
+                      </select> 
+                    </td>
+                    <!-- <td style="text-align: center;">{{ income.dateIncome | date:'dd/MM/yyyy' }}</td> -->
+                    <!-- <td style="text-align: center;">{{ income.amount | number: '1.2-2'}}</td> -->
+                    <!-- <td>
+                      <div style="text-align: center;">
+                        <a style="cursor: pointer;" (click)="deleteIncome(income.idIncome)"><i class="fa fa-trash fa-lg"></i></a>&nbsp;
+                        <a style="cursor: pointer;" (click)="editIncome(income)"><i class="fa fa-edit fa-lg"></i></a>
+                      </div>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div><br>            
+            <nav class="form-inline">
+              <div class="col-xs-12 col-6">
+                <pagination [boundaryLinks]="true" [totalItems]="totalItems" (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage" class="pagination-sm" [maxSize]="6"
+                            previousText="&lsaquo;" [itemsPerPage]="itemsPerPage" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+              </div> 
+              <div class="col-xd-12 col-3">
+                <select id="selectUser" name="selectUser" (change)="filterPagination()" [(ngModel)]="itemsPerPage" style="width: 80px;" class="form-control">
+                  <option *ngFor="let item of listPaginado" [value] = "item.id">{{ item.name }}</option>                          
+                </select>          
+              </div>
+              <div class="col-xd-12 col-3">
+                <span>Total de registros:  {{ totalItems }}&nbsp;&nbsp;&nbsp;</span>                
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-1"></div> -->
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+  </div>
+  
+  <ngx-spinner></ngx-spinner>
+
+  <div style="display: none;">
+    <table class="table table-bordered table-striped table-sm" id="excel-tablexxx">
+      <thead>
+        <tr>
+          <th style="text-align: center;">Owner</th>
+          <th style="text-align: center;">Nombre</th>
+          <th style="text-align: center;">ID</th>
+          <th style="text-align: center;">Equipo</th>
+          <th style="text-align: center;">Sueldo</th>
+          <th style="text-align: center;">Edad</th>
+          <th style="text-align: center;">Altura</th>
+          <th style="text-align: center;" title="Fecha Ultima Actualización">Fecha Ultima Actualización</th>
+          <!-- Skill -->
+          <th style="text-align: center;">gameShape</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">potential</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">jumpShot</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">nrange</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">outsideDef</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">handling</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">driving</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">passing</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">insideShot</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">insideDef</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">rebound</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">block</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">stamina</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">freeThrow</th>
+          <th style="text-align: center;"></th>
+          <th style="text-align: center;">experience</th>
+          <th style="text-align: center;"></th>
+          <!-- Skill -->
+          <th style="text-align: center;">games</th>
+          <th style="text-align: center;">mpg</th>
+          <th style="text-align: center;">fgPerc</th>
+          <th style="text-align: center;">tpPerc</th>
+          <th style="text-align: center;">ftPerc</th>
+          <th style="text-align: center;">orpg</th>
+          <th style="text-align: center;">rpg</th>
+          <th style="text-align: center;">apg</th>
+          <th style="text-align: center;">topg</th>
+          <th style="text-align: center;">spg</th>
+          <th style="text-align: center;">bpg</th>
+          <th style="text-align: center;">ppg</th>
+          <th style="text-align: center;">fpg</th>
+          <th style="text-align: center;">rating</th>
+          <th style="text-align: center;">Marca</th>
+          <th style="text-align: center;">Es Selección</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of listPlayers">
+          <td style="text-align: center;">{{ player.owner}}</td>
+          <td style="text-align: center;">{{ player.firstName + ' ' + player.lastName }}</td>
+          <td style="text-align: center;">{{ player.idplayer}}</td>
+          <td style="text-align: center;">{{ player.teamName}}</td>
+          <td style="text-align: center;">{{ player.salary | number : '1.2-2' }}</td>
+          <td style="text-align: center;">{{ player.age}}</td>
+          <td style="text-align: center;">{{ player.height}}</td>
+          <td style="text-align: center;">{{ player.dupdate | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <!-- Skill -->
+          <td style="text-align: center;">{{ player.gameShape}}</td>
+          <td style="text-align: center;">{{ player.h_gameShape >= 0 ? '▲' + player.h_gameShape : '▼' + player.h_gameShape}}</td>
+          <td style="text-align: center;">{{ player.potential}}</td>
+          <td style="text-align: center;">{{ player.h_potential >= 0 ? '▲' + player.h_potential : '▼' + player.h_potential}}</td>
+          <td style="text-align: center;">{{ player.jumpShot}}</td>
+          <td style="text-align: center;">{{ player.h_jumpShot >= 0 ? '▲' + player.h_jumpShot : '▼' + player.h_jumpShot}}</td>
+          <td style="text-align: center;">{{ player.nrange}}</td>
+          <td style="text-align: center;">{{ player.h_nrange >= 0 ? '▲' + player.h_nrange : '▼' + player.h_nrange}}</td>
+          <td style="text-align: center;">{{ player.outsideDef}}</td>
+          <td style="text-align: center;">{{ player.h_outsideDef >= 0 ? '▲' + player.h_outsideDef : '▼' + player.h_outsideDef}}</td>
+          <td style="text-align: center;">{{ player.handling}}</td>
+          <td style="text-align: center;">{{ player.h_handling >= 0 ? '▲' + player.h_handling : '▼' + player.h_handling}}</td>
+          <td style="text-align: center;">{{ player.driving}}</td>
+          <td style="text-align: center;">{{ player.h_driving >= 0 ? '▲' + player.h_driving : '▼' + player.h_driving}}</td>
+          <td style="text-align: center;">{{ player.passing}}</td>
+          <td style="text-align: center;">{{ player.h_passing >= 0 ? '▲' + player.h_passing : '▼' + player.h_passing}}</td>
+          <td style="text-align: center;">{{ player.insideShot}}</td>
+          <td style="text-align: center;">{{ player.h_insideShot >= 0 ? '▲' + player.h_insideShot : '▼' + player.h_insideShot}}</td>
+          <td style="text-align: center;">{{ player.insideDef}}</td>
+          <td style="text-align: center;">{{ player.h_insideDef >= 0 ? '▲' + player.h_insideDef : '▼' + player.h_insideDef}}</td>
+          <td style="text-align: center;">{{ player.rebound}}</td>
+          <td style="text-align: center;">{{ player.h_rebound >= 0 ? '▲' + player.h_rebound : '▼' + player.h_rebound}}</td>
+          <td style="text-align: center;">{{ player.block}}</td>
+          <td style="text-align: center;">{{ player.h_block >= 0 ? '▲' + player.h_block : '▼' + player.h_block}}</td>
+          <td style="text-align: center;">{{ player.stamina}}</td>
+          <td style="text-align: center;">{{ player.h_stamina >= 0 ? '▲' + player.h_stamina : '▼' + player.h_stamina}}</td>
+          <td style="text-align: center;">{{ player.freeThrow}}</td>
+          <td style="text-align: center;">{{ player.h_freeThrow >= 0 ? '▲' + player.h_freeThrow : '▼' + player.h_freeThrow}}</td>
+          <td style="text-align: center;">{{ player.experience}}</td>   
+          <td style="text-align: center;">{{ player.h_experience >= 0 ? '▲' + player.h_experience : '▼' + player.h_experience}}</td>
+          <!-- Skill -->
+          <td style="text-align: center;">{{ player.games}}</td>
+          <td style="text-align: center;">{{ player.mpg}}</td>
+          <td style="text-align: center;">{{ player.fgPerc}}</td>
+          <td style="text-align: center;">{{ player.tpPerc}}</td>
+          <td style="text-align: center;">{{ player.ftPerc}}</td>
+          <td style="text-align: center;">{{ player.orpg}}</td>
+          <td style="text-align: center;">{{ player.rpg}}</td>
+          <td style="text-align: center;">{{ player.apg}}</td>
+          <td style="text-align: center;">{{ player.topg}}</td>
+          <td style="text-align: center;">{{ player.spg}}</td>
+          <td style="text-align: center;">{{ player.bpg}}</td>
+          <td style="text-align: center;">{{ player.ppg}}</td>
+          <td style="text-align: center;">{{ player.fpg}}</td>
+          <td style="text-align: center;">{{ player.rating}}</td>
+          <td style="text-align: center;">{{ player.check1 == 1 ? "SI" : "NO" }}</td>
+          <td style="text-align: center;">{{ player.check2 == 1 ? "SI" : "NO" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,138 @@
+<div class="animated fadeIn mt-3">
+
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <div class="card">            
+            <div class="card-footer" style="text-align: center;">
+              <div class="form-inline">                
+                <div class="form-group row col-md-4">                      
+                  <div class="col-md-4 align-label">
+                    <label class="col-form-label" for="selectCategory">Año</label>
+                  </div>
+                  <div class="col-md-8 col-sm-12">
+                    <select id="selectYear" [(ngModel)]="nyear" name="selectYear" style="width: 90%;" class="form-control">
+                      <option value="00">Seleccione</option> 
+                      <option *ngFor="let item of listYear" [value] = "item.nid_value">{{ item.svalue }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row col-md-4">                      
+                  <div class="col-md-4 align-label">
+                    <label class="col-form-label" for="selectCategory">Mes</label>
+                  </div>
+                  <div class="col-md-8 col-sm-12">
+                    <select id="selectMonth" [(ngModel)]="nmonth" name="selectMonth" style="width: 90%;" class="form-control">
+                      <option value=0>Todos</option> 
+                      <option *ngFor="let item of listMonths" [value] = "item.nid_value">{{ item.svalue }}</option>
+                    </select>
+                  </div>
+                </div> 
+                <div class="form-group row col-md-4 d-flex justify-content-center">
+                  <button (click)="findData()" class="btn btn-md btn-primary"><i class="fa fa-search fa-lg"></i> Buscar</button> 
+                </div>  
+              </div>           
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>        
+</div>
+
+  <div class="col-lg-12 form-inline" style="display: flex; align-items: flex-start;">       
+    <div class="card col-md-8 col-xs-12" style="margin: 0 !important;">
+      <div class="card-header">
+        Gráfico de Barras por Año - {{ nyear }}
+        <!-- <div class="card-header-actions">
+          <a href="http://www.chartjs.org">
+            <small class="text-muted">docs</small>
+          </a>
+        </div> -->
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas baseChart class="chart dashboard-min"
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-xs-12 mt-4">
+      <div class="col-sm-12">
+        <div class="card text-white bg-primary mb-0">
+          <div class="card-body pb-0">
+            <button (click)="isCollapsedIncome = !isCollapsedIncome" type="button" class="btn btn-transparent p-0 float-right">
+              <i [ngClass]="!isCollapsedIncome ? 'icon-arrow-up' : 'icon-arrow-down'"></i>
+            </button>
+            <div>Ingresos - {{ nameMonth }}</div>
+            <div class="text-value">{{ sumIncomes | number: '1.2-2' }}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body"
+              [collapse]="isCollapsedIncome">
+            <table style="width: 100%;">
+              <tr *ngFor="let item of listAmountxCategoryIncome">
+                <td style="width: 50%;"><strong>{{ item.sname_type }}:</strong></td>
+                <td style="width: 50%;">{{ item.namount | number: '1.2-2' }}</td>
+              </tr>
+
+              <!-- <tr>
+                <td style="width: 40%;"><strong>Compra:</strong></td>
+                <td style="width: 60%;">580</td>
+              </tr>
+              <tr>
+                <td style="width: 40%;"><strong>Pago:</strong></td>
+                <td style="width: 60%;">250</td>
+              </tr>
+              <tr>
+                <td style="width: 40%;"><strong>Sueldo:</strong></td>
+                <td style="width: 60%;">3860</td>
+              </tr> -->
+            </table>
+          </div>
+        </div>
+      </div><!--/.col-->     
+
+      <div class="col-sm-12">
+        <div class="card text-white bg-danger mb-0">
+          <div class="card-body pb-0">
+            <button (click)="isCollapsedExpense = !isCollapsedExpense" type="button" class="btn btn-transparent p-0 float-right">
+              <i [ngClass]="!isCollapsedExpense ? 'icon-arrow-up' : 'icon-arrow-down'"></i>
+            </button>
+            <div>Gastos - {{ nameMonth }}</div>
+            <div class="text-value">{{ sumExpenses | number: '1.2-2' }}</div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-body"
+              [collapse]="isCollapsedExpense">
+            <table style="width: 100%;">
+              <tr *ngFor="let item of listAmountxCategoryExpense">
+                <td style="width: 50%;"><strong>{{ item.sname_type }}:</strong></td>
+                <td style="width: 50%;">{{ item.namount | number: '1.2-2' }}</td>
+              </tr>
+              <!-- <tr>
+                <td style="width: 40%;"><strong>Compra:</strong></td>
+                <td style="width: 60%;">580</td>
+              </tr>
+              <tr>
+                <td style="width: 40%;"><strong>Pago:</strong></td>
+                <td style="width: 60%;">400</td>
+              </tr>
+              <tr>
+                <td style="width: 40%;"><strong>Ahorro:</strong></td>
+                <td style="width: 60%;">250</td>
+              </tr> -->
+            </table>
+          </div>
+        </div>
+      </div><!--/.col-->
+    </div>
+  </div>
+</div>

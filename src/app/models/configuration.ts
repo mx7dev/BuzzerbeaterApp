@@ -1,0 +1,34 @@
+export class Configuration {
+    nidconfig: number;
+    ntipo_config: number;
+    sdescripcion1:  string;
+    sdescripcion2:  string;
+    ntiro: number;
+    nalcance: number;
+    ndefensa_exterior: number;
+    nmanejo: number;
+    npenetracion: number;
+    npases: number;
+    ntiro_interior: number;
+    ndefensa_interior: number;
+    nrebotes: number; 
+    ntapones: number;
+    nresistencia: number;
+    ntiros_libres: number;
+    nsuma_21_exterior: number;
+    nsuma_21_interior: number;
+    nsuma_21_total: number;
+    nsuma_20_exterior: number;
+    nsuma_20_interior: number;
+    nsuma_20_total: number;
+    nsuma_19_exterior: number;
+    nsuma_19_interior: number;
+    nsuma_19_total: number;
+    nsuma_18_exterior: number;
+    nsuma_18_interior: number;
+    nsuma_18_total: number;
+    nparam1: number;
+    nparam2: number;
+    nparam3: number;
+    nparam4: number;
+}
